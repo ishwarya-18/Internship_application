@@ -2,27 +2,30 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
-const { Client } = require('pg');  // Import the PostgreSQL client
+const { Client } = require("pg");
 
 const app = express();
 const PORT = 3000;
 
-// Set up PostgreSQL connection
+// PostgreSQL Connection
 const client = new Client({
-    user: 'postgres',  // Replace with your PostgreSQL username
-    host: 'localhost',
-    database: 'internship_applications',
-    password: '2005',  // Replace with your PostgreSQL password
+    user: "postgres",  
+    host: "localhost",
+    database: "internship_applications",
+    password: "2005",  
     port: 5432,
 });
-client.connect();  // Connect to PostgreSQL
+
+client.connect()
+    .then(() => console.log("Connected to PostgreSQL"))
+    .catch(err => console.error("Connection error", err.stack));
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));  // Updated static path
+app.use(express.static(path.join(__dirname, "public"))); // Serve CSS, JS
+app.use(express.static(path.join(__dirname, "views")));  // Serve HTML
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));  // ✅ Serve Uploaded Files
 
-// Set up file storage for resume
+// Configure Multer for file uploads
 const storage = multer.diskStorage({
     destination: "uploads/",
     filename: (req, file, cb) => {
@@ -31,29 +34,32 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Render the application form
 app.get("/", (req, res) => {
-    res.render("index");
+    res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
-// Handle form submission and store data in PostgreSQL
-app.post("/submit", upload.single("resume"), (req, res) => {
+// Handle form submission
+app.post("/submit", upload.single("resume"), async (req, res) => {
     const { name, email, phone, address, university, degree, position, coverLetter } = req.body;
     const resume = req.file ? req.file.filename : "No file uploaded";
-    
-    // Insert the data into the database
-    const query = `INSERT INTO applications (name, email, phone, address, university, degree, position, cover_letter, resume) 
-                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
-    
-    client.query(query, [name, email, phone, address, university, degree, position, coverLetter, resume], (err, result) => {
-        if (err) {
-            console.error("Error inserting data into database", err);
-            return res.status(500).send("Error submitting application");
-        }
-        
-        // Render success page after data is inserted
-        res.render("success", { name, email, phone, address, university, degree, position, coverLetter, resume });
-    });
+
+    try {
+        const query = `
+            INSERT INTO applications (name, email, phone, address, university, degree, position, cover_letter, resume) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
+        `;
+
+        const values = [name, email, phone, address, university, degree, position, coverLetter, resume];
+        await client.query(query, values);
+        console.log("Data inserted successfully!");
+
+        // Redirect to success page with query parameters
+        res.redirect(`/success.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${phone}&address=${encodeURIComponent(address)}&university=${encodeURIComponent(university)}&degree=${encodeURIComponent(degree)}&position=${encodeURIComponent(position)}&coverLetter=${encodeURIComponent(coverLetter)}&resume=${encodeURIComponent(resume)}`);
+
+    } catch (err) {
+        console.error("Error inserting data into database:", err);
+        res.status(500).send("Error submitting application");
+    }
 });
 
 // Start the server

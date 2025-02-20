@@ -8,20 +8,50 @@
 </head>
 <body>
     <div class="container">
-        <h2>Internship Application Submitted Successfully!</h2>
-        <p><strong>Name:</strong> {{name}}</p>
-        <p><strong>Email:</strong> {{email}}</p>
-        <p><strong>Phone:</strong> {{phone}}</p>
-        <p><strong>Address:</strong> {{address}}</p>
-        <p><strong>University:</strong> {{university}}</p>
-        <p><strong>Degree:</strong> {{degree}}</p>
-        <p><strong>Internship Position:</strong> {{position}}</p>
-        <p><strong>Cover Letter:</strong></p>
-        <p>{{coverLetter}}</p>
-        <p><strong>Resume:</strong> 
-            <a href="/uploads/{{resume}}" target="_blank">View Resume</a>
-        </p>
-        <a href="/">Go Back</a>
+    <h2>Internship Application Submitted Successfully!</h2>
+    
+    <p><strong>Name:</strong> <span id="name"></span></p>
+    <p><strong>Email:</strong> <span id="email"></span></p>
+    <p><strong>Phone:</strong> <span id="phone"></span></p>
+    <p><strong>Address:</strong> <span id="address"></span></p>
+    <p><strong>University:</strong> <span id="university"></span></p>
+    <p><strong>Degree:</strong> <span id="degree"></span></p>
+    <p><strong>Internship Position:</strong> <span id="position"></span></p>
+    
+    <p><strong>Cover Letter:</strong></p>
+    <p id="coverLetter"></p>
+
+    <p><strong>Resume:</strong> <a id="resumeLink" href="#" target="_blank">View Resume</a></p>
+
+    <a href="/">Go Back</a>
     </div>
+    <script>
+        // Extract URL parameters and update HTML content
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById("name").textContent = params.get("name") || "N/A";
+            document.getElementById("email").textContent = params.get("email") || "N/A";
+            document.getElementById("phone").textContent = params.get("phone") || "N/A";
+            document.getElementById("address").textContent = params.get("address") || "N/A";
+            document.getElementById("university").textContent = params.get("university") || "N/A";
+            document.getElementById("degree").textContent = params.get("degree") || "N/A";
+            document.getElementById("position").textContent = params.get("position") || "N/A";
+            document.getElementById("coverLetter").textContent = params.get("coverLetter") || "N/A";
+
+            // Handle Resume Link
+            const resumeFile = params.get("resume");
+            console.log("Resume file received:", resumeFile);  // Debugging log
+            if (resumeFile && resumeFile !== "No file uploaded") {
+                document.getElementById("resumeLink").href = `/uploads/${resumeFile}`;
+                document.getElementById("resumeLink").textContent = "View Resume";
+            } else {
+                document.getElementById("resumeLink").textContent = "No Resume Uploaded";
+                document.getElementById("resumeLink").removeAttribute("href");
+            }
+        }
+
+        // Call function on page load
+        window.onload = getQueryParams;
+    </script>
 </body>
 </html>

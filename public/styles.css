@@ -20,6 +20,39 @@ body {
     border-top: 5px solid #007bff;
 }
 
+/* Style for details section */
+p {
+    font-size: 16px; /* Adjust text size */
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd; /* Optional: Adds a separator */
+    padding: 5px 0;
+}
+
+/* Style for labels */
+p strong {
+    flex: 1;
+    text-align: left;
+    font-weight: 600;
+}
+
+/* Style for answers */
+p span {
+    flex: 2;
+    text-align: left;
+}
+p a {
+    flex: 2;
+    text-align: left;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+    word-break: break-word; /* Ensures long URLs wrap properly */
+}
+
+p a:hover {
+    text-decoration: underline;
+}
 /* Heading */
 h2 {
     color: #3c3f58;
@@ -93,7 +126,7 @@ button:hover {
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .container {
-        width: 95%;
+        width: 88%;
         padding: 20px;
     }
     
@@ -118,20 +151,36 @@ button:hover {
 
 @media screen and (max-width: 480px) {
     .container {
-        padding: 15px;
+        width: 95%;
+        padding: 12px;
     }
 
     h2 {
         font-size: 18px;
+        margin-bottom: 15px;
     }
     
+    p {
+        font-size: 14px;
+        flex-direction: column; /* Stack label and value for better fit */
+    }
+
+    p strong, p span, p a {
+        display: block;
+        text-align: left;
+        width: 100%;
+    }
+
     input, textarea {
         font-size: 12px;
-        padding: 8px;
+        padding: 10px;
+        min-height: 40px;
     }
 
     button {
         font-size: 14px;
-        padding: 10px;
+        padding: 12px;
+        min-height: 44px;
     }
 }
+
