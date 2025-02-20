@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #f4f7fb, #e6effb);
@@ -6,63 +7,131 @@ body {
     padding: 0;
 }
 
+/* Centered container with responsiveness */
 .container {
-    width: 40%; /* Reduced width */
-    margin: 30px auto; /* Reduced margin */
-    padding: 25px; /* Reduced padding */
+    width: 90%;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
     background: #ffffff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     text-align: left;
-    border-top: 4px solid #007bff;
+    border-top: 5px solid #007bff;
 }
 
+/* Heading */
 h2 {
     color: #3c3f58;
-    font-size: 24px; /* Reduced font size */
+    font-size: 22px;
     margin-bottom: 20px;
     font-weight: 600;
     text-align: center;
 }
 
+/* Form Styling */
 form {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
+/* Labels */
 label {
-    margin-top: 12px; /* Reduced margin */
+    margin-top: 12px;
     font-weight: 500;
     color: #4b4f69;
-    font-size: 14px; /* Reduced font size */
+    font-size: 14px;
 }
 
+/* Input & Textarea */
 input, textarea {
     width: 100%;
-    padding: 10px; /* Reduced padding */
+    padding: 12px;
     margin-top: 6px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 14px; /* Reduced font size */
+    font-size: 14px;
     box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
 }
 
+/* Hover & Focus Effects */
+input:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Textarea */
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Submit Button */
 button {
     background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
-    padding: 12px 25px; /* Reduced padding */
+    padding: 12px;
     margin-top: 20px;
     border: none;
-    margin-left: auto;
-    margin-right: auto;
     cursor: pointer;
-    border-radius: 20px;
-    font-size: 16px; /* Reduced font size */
+    border-radius: 25px;
+    font-size: 16px;
     font-weight: bold;
+    text-align: center;
+    width: 100%;
+    transition: 0.3s;
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
-textarea {
-    height: 100px; /* Reduced height */
+/* Button Hover */
+button:hover {
+    background: linear-gradient(135deg, #0056b3, #003f7f);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    label {
+        font-size: 13px;
+    }
+    
+    input, textarea {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+    
+    input, textarea {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
 }

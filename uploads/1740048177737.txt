@@ -1,0 +1,40 @@
+
+🚀 Excited to share my latest project! 🚀
+
+As part of my internship at Cognifyz Technologies, I built a Full-Stack Internship Application that demonstrates my skills in web development. Key highlights:
+
+🔹 Frontend: EJS (Embedded JavaScript)
+
+🔹 Backend: Node.js with Express
+
+🔹 Database: PostgreSQL
+
+🔹 Features:
+
+📄 Form to submit internship applications (name, email, phone, address, university, degree, position, and cover letter)
+
+📎 Resume upload functionality using Multer for file handling
+
+🎨 User-friendly UI with responsive design
+
+🔒 Data stored securely in a PostgreSQL database
+
+✅ Success page displaying submitted data and providing a download link for the uploaded resume
+
+🔹 Technologies Used:
+
+💻 Node.js & Express for the server-side logic
+
+🗃️ PostgreSQL for storing form data
+
+📤 Multer for handling file uploads (resumes)
+
+⚙️ EJS for rendering dynamic content on the frontend
+
+🎨 CSS for styling with a clean and modern design
+
+💥 Check out the GitHub Repository to see the full-stack implementation in action:
+
+🔗 GitHub Repository - https://github.com/ishwarya-18/Internship_application
+
+#FullStackDevelopment #EJS #NodeJS #Express #PostgreSQL #WebDevelopment #Multer #InternshipApplication #Coding #cognifyz #cognifyzTech #cognifyzTechnologies
