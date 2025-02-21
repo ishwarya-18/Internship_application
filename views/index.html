@@ -9,12 +9,13 @@
 <body>
     <div class="container">
         <h2>Internship Application Form</h2>
-        <form action="/submit" method="POST" enctype="multipart/form-data">
+        <form id="applicationForm" enctype="multipart/form-data">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
+            <span id="email-error" style="color: red;"></span> <!-- Error will appear here -->
 
             <label for="phone">Phone:</label>
             <input type="tel" id="phone" name="phone" required>
@@ -38,7 +39,48 @@
             <input type="file" id="resume" name="resume" accept=".pdf,.docx,.txt" required>
 
             <button type="submit">Submit</button>
+
+            <p id="error-message" style="color: red;"></p> <!-- General error message -->
         </form>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("applicationForm");
+            const errorField = document.getElementById("error-message");
+            const emailError = document.getElementById("email-error");
+
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent default form submission
+                errorField.innerText = ""; // Clear previous errors
+                emailError.innerText = ""; // Clear previous email error
+
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch("/submit", {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        if (result.error.includes("email")) {
+                            emailError.innerText = result.error;
+                        } else {
+                            errorField.innerText = result.error;
+                        }
+                        return;
+                    }
+
+                    // Redirect with query params on success
+                    window.location.href = `/success.html?name=${encodeURIComponent(result.name)}&email=${encodeURIComponent(result.email)}&phone=${encodeURIComponent(result.phone)}&address=${encodeURIComponent(result.address)}&university=${encodeURIComponent(result.university)}&degree=${encodeURIComponent(result.degree)}&position=${encodeURIComponent(result.position)}&coverLetter=${encodeURIComponent(result.coverLetter)}&resume=${encodeURIComponent(result.resume)}`;
+                } catch (err) {
+                    errorField.innerText = "Something went wrong. Please try again.";
+                }
+            });
+        });
+    </script>
 </body>
 </html>

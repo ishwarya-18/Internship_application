@@ -38,30 +38,36 @@ const upload = multer({ storage: storage });
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"));
 });
-
-// Handle form submission
 app.post("/submit", upload.single("resume"), async (req, res) => {
     const { name, email, phone, address, university, degree, position, coverLetter } = req.body;
     const resume = req.file ? req.file.filename : "No file uploaded";
 
     try {
+        // Check if email already exists
+        const emailCheckQuery = `SELECT * FROM applications WHERE email = $1`;
+        const emailCheckResult = await client.query(emailCheckQuery, [email]);
+
+        if (emailCheckResult.rows.length > 0) {
+            return res.status(400).json({ error: "Email already exists." });
+        }
+
+        // Insert new application
         const query = `
             INSERT INTO applications (name, email, phone, address, university, degree, position, cover_letter, resume) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
         `;
-
         const values = [name, email, phone, address, university, degree, position, coverLetter, resume];
         await client.query(query, values);
         console.log("Data inserted successfully!");
 
-        // Redirect to success page with query parameters
-        res.redirect(`/success.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${phone}&address=${encodeURIComponent(address)}&university=${encodeURIComponent(university)}&degree=${encodeURIComponent(degree)}&position=${encodeURIComponent(position)}&coverLetter=${encodeURIComponent(coverLetter)}&resume=${encodeURIComponent(resume)}`);
+        res.status(200).json({ success: true, name, email, phone, address, university, degree, position, coverLetter, resume });
 
     } catch (err) {
-        console.error("Error inserting data into database:", err);
-        res.status(500).send("Error submitting application");
+        console.error("Error inserting data:", err);
+        res.status(500).json({ error: "Server error. Please try again." });
     }
 });
+
 
 // Start the server
 app.listen(PORT, () => {
