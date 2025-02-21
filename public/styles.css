@@ -126,7 +126,7 @@ button:hover {
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .container {
-        width: 84%;
+        width: 75%;
         padding: 20px;
     }
     
