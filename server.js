@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
@@ -9,16 +10,16 @@ const PORT = 3000;
 
 // PostgreSQL Connection
 const client = new Client({
-    user: "postgres",  
-    host: "localhost",
-    database: "internship_applications",
-    password: "2005",  
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false, // Required for Render
+    }
 });
 
 client.connect()
     .then(() => console.log("Connected to PostgreSQL"))
     .catch(err => console.error("Connection error", err.stack));
+module.exports = client;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public"))); // Serve CSS, JS
