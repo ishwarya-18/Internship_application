@@ -37,7 +37,7 @@ npm install
 ### 3️⃣ Setup Environment Variables
 Create a `.env` file and add your PostgreSQL database URL:
 ```
-DATABASE_URL=postgresql://feedback_form_db_user:uiwRk1yIWQaDErFI9BLS3V5QOv6YFk1T@dpg-cus11ppopnds73953p4g-a.oregon-postgres.render.com/feedback_form_db
+DATABASE_URL=postgresql://postgres:2005@localhost:5432/internship_applications
 ```
 
 ### 4️⃣ Start the Server
