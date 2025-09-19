@@ -11,9 +11,8 @@ const PORT = 3000;
 // PostgreSQL Connection
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false, // Required for Render
-    }
+    ssl: false
+
 });
 
 client.connect()
